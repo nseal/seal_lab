@@ -53,16 +53,4 @@ jobs:
           git add article/
           git diff --cached --quiet || git commit -m "article: add Claude digest for ${{ steps.date.outputs.value }}"
           git push origin HEAD
-
-      - name: Send digest email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ssurekl@gmail.com
-          password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: "Claude Articles — ${{ steps.date.outputs.value }}"
-          to: ssurekl@gmail.com
-          from: "Claude Article Bot <ssurekl@gmail.com>"
-          body: file://article/${{ steps.date.outputs.value }}.md
+          # Email is sent by the Gmail MCP when the skill runs in a Claude Code session.

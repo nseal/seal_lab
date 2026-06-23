@@ -1,17 +1,10 @@
 # daily-claude-article-search
 
-Search the web for today's top Claude / Anthropic articles and save a dated summary to the `article/` folder.
-
-## When to use
-
-Invoke this skill when the user wants to:
-- Find today's Claude or Anthropic news
-- Populate the `article/` folder with a fresh daily digest
-- Run the recurring article-search task manually (`/daily-claude-article-search`)
+Search the web for today's top Claude / Anthropic articles, save a dated digest to the `article/` folder, and email it to ssurekl@gmail.com via the Gmail MCP.
 
 ## Steps
 
-1. Determine today's date (YYYY-MM-DD format).
+1. Determine today's date (YYYY-MM-DD). Use the `currentDate` context variable if available.
 
 2. Run these three web searches in parallel:
    - `"Claude AI" OR "Anthropic Claude" latest news {today's date}`
@@ -26,9 +19,16 @@ Invoke this skill when the user wants to:
    - URL
    - One-sentence summary of what the article covers
 
-5. Write the results to `article/YYYY-MM-DD.md` using the template below. If the file already exists for today, **append** new unique articles rather than overwriting.
+5. Write the digest to `article/YYYY-MM-DD.md` using the template below. If the file already exists for today, **append** new unique articles rather than overwriting.
 
-6. Confirm to the user how many articles were saved and the file path.
+6. Commit the file with: `article: add Claude digest for YYYY-MM-DD`.
+
+7. Send the digest email using the Gmail MCP (`mcp__Gmail__create_draft` then send, or directly via the send tool if available):
+   - **To**: ssurekl@gmail.com
+   - **Subject**: `Claude Articles — YYYY-MM-DD`
+   - **Body**: the full markdown content of the saved file
+
+8. Confirm to the user: how many articles were saved, the file path, and that the email was sent.
 
 ## Output template
 
@@ -50,6 +50,5 @@ Invoke this skill when the user wants to:
 
 ## Notes
 
-- Always use today's date from the environment (`currentDate` context variable if available, otherwise ask the system).
 - The `article/` folder is at the project root.
-- Commit the new file with message: `article: add Claude digest for YYYY-MM-DD`.
+- Email is sent via the Gmail MCP already configured in this Claude Code session — no SMTP credentials needed.
