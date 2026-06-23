@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '[daily-claude-article-search] Run /daily-claude-article-search to fetch today\\'s Claude articles.'"
+            "command": "echo '[seal_lab] Run /daily-claude-article-search to fetch today'\"'\"'s Claude articles into article/.'"
           }
         ]
       }

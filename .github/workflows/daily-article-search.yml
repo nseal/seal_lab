@@ -21,34 +21,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'
+          python-version: '3.12'
 
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code
+      - name: Install dependencies
+        run: pip install feedparser requests
 
-      - name: Determine target date
-        id: date
-        run: |
-          if [ -n "${{ github.event.inputs.date_override }}" ]; then
-            echo "target=${{ github.event.inputs.date_override }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "target=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Run article search skill
+      - name: Search and save articles
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          TARGET_DATE="${{ steps.date.outputs.target }}"
-          claude --print \
-            "Today's date is ${TARGET_DATE}. Run /daily-claude-article-search to find and save today's top Claude and Anthropic articles to the article/ folder. After saving, stage and commit the new file with the message: 'article: add Claude digest for ${TARGET_DATE}'." \
-            --allowedTools "WebSearch,Read,Write,Bash(git*)"
+          DATE_OVERRIDE: ${{ github.event.inputs.date_override }}
+        run: python .github/scripts/fetch_claude_articles.py
 
-      - name: Push committed article file
+      - name: Commit and push
         run: |
           git config user.name "claude-article-bot"
           git config user.email "noreply@anthropic.com"
+          git add article/
+          git diff --cached --quiet || git commit -m "article: add Claude digest for $(date -u +%Y-%m-%d)"
           git push origin HEAD
