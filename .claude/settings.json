@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[daily-claude-article-search] Run /daily-claude-article-search to fetch today\\'s Claude articles.'"
+          }
+        ]
+      }
+    ]
+  }
+}
