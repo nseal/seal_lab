@@ -1,5 +1,13 @@
 # seal_lab
 
+## MCP Gateway
+
+`mcp-gateway/` はテナント制限つきの MCP 中間プロキシ (TypeScript monorepo)。接続口ごとに専用の上流認証情報・許可テナント・公開ツール allowlist を管理する。詳細は `mcp-gateway/README.md`。
+
+```
+cd mcp-gateway && npm install && npm test   # e2e テスト
+```
+
 ## Daily Claude Article Search
 
 This repo collects daily digests of top Claude / Anthropic articles.
