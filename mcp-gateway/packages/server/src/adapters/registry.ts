@@ -1,9 +1,11 @@
 import type { UpstreamAdapter } from './types.js';
 import { asanaAdapter } from './asana.js';
+import { atlassianAdapter } from './atlassian.js';
+import { boxAdapter } from './box.js';
 import { genericAdapter } from './generic.js';
 
 const adapters = new Map<string, UpstreamAdapter>(
-  [asanaAdapter, genericAdapter].map((a) => [a.type, a]),
+  [asanaAdapter, atlassianAdapter, boxAdapter, genericAdapter].map((a) => [a.type, a]),
 );
 
 export function getAdapter(type: string): UpstreamAdapter {

@@ -7,6 +7,25 @@ interface Props {
   endpointId?: string;
 }
 
+function tenantHint(adapterType: string): string {
+  switch (adapterType) {
+    case 'asana':
+      return 'Asana のワークスペース GID。このワークスペース以外へのアクセスは遮断されます。';
+    case 'atlassian':
+      return (
+        'Atlassian サイトの cloudId。https://<サイト名>.atlassian.net/_edge/tenant_info で確認できます。' +
+        'この cloudId 以外へのアクセスは遮断されます。'
+      );
+    case 'box':
+      return (
+        'Box のエンタープライズ ID (管理コンソール → アカウント情報)。Box はトークン自体がテナントに紐づくため、' +
+        'この接続口専用のトークンを使うことが主な防御になります。'
+      );
+    default:
+      return 'このテナント以外を指すツール引数は遮断されます。';
+  }
+}
+
 export function EndpointEdit({ navigate, endpointId }: Props) {
   const isNew = !endpointId;
   const [adapters, setAdapters] = useState<AdapterInfo[]>([]);
@@ -156,9 +175,7 @@ export function EndpointEdit({ navigate, endpointId }: Props) {
         <label>
           許可テナント ID
           <div className="hint">
-            {adapterType === 'asana'
-              ? 'Asana のワークスペース GID。このワークスペース以外へのアクセスは遮断されます。'
-              : 'このテナント以外を指すツール引数は遮断されます。'}
+            {tenantHint(adapterType)}
             {adapter && ` 検査対象の引数: ${adapter.tenantParamNames.join(', ')}`}
           </div>
         </label>
