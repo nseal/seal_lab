@@ -18,7 +18,7 @@ export interface Gateway {
 }
 
 export function createGateway(config: GatewayConfig): Gateway {
-  const db = openDb(config.dbPath);
+  const db = openDb(config.dbPath, config.sqliteJournal);
   const repo = new Repo(db);
   const pool = new UpstreamPool(config.masterKey);
 

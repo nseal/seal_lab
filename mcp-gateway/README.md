@@ -40,6 +40,18 @@ node packages/server/dist/index.js
 | `MCP_GATEWAY_ADMIN_TOKEN` | ✔ | 管理 API / 管理画面のログイントークン |
 | `MCP_GATEWAY_PORT` | | 待受ポート (デフォルト 8787) |
 | `MCP_GATEWAY_DB_PATH` | | SQLite ファイルパス (デフォルト `data/gateway.db`) |
+| `MCP_GATEWAY_SQLITE_JOURNAL` | | `WAL` (デフォルト) / `DELETE`。Azure Files 等のネットワークファイルシステム上では `DELETE` を指定 |
+
+## 対応アダプタ
+
+| アダプタ | 上流 (デフォルト) | テナントID | 調べ方 |
+| --- | --- | --- | --- |
+| Asana | `https://mcp.asana.com/sse` | ワークスペース GID | Asana 管理コンソール、または API `/workspaces` |
+| Atlassian (Jira / Confluence) | `https://mcp.atlassian.com/v1/mcp` | cloudId (サイト単位) | `https://<サイト名>.atlassian.net/_edge/tenant_info` |
+| Box | `https://mcp.box.com` | エンタープライズ ID | 管理コンソール → アカウント情報。※Box はトークン自体がテナントに紐づくため接続口専用トークンが主防御。OAuth トークンの期限 (標準60分) に注意 |
+| Generic | (指定必須) | 任意 (`tenant_id` / `workspace` 等の引数を検査) | 接続先サービスに依存 |
+
+いずれも Bearer トークン認証。ツール引数のテナント検査は各アダプタが宣言する引数名に対して行われます (ネストした引数も対象)。
 
 ## 使い方
 
@@ -58,6 +70,11 @@ claude mcp add asana-team-a --transport http http://localhost:8787/mcp/asana-tea
 
 1. **構造的防御(主)**: 接続口ごとに専用の上流トークンを暗号化保存。トークン自体が単一テナントに限定されていれば、他テナントには構造上到達できません。
 2. **検証的防御(副)**: アダプタが宣言するテナント引数(Asana: `workspace`, `workspace_gid`, `workspace_id`)を `tools/call` の引数からネスト構造ごと検査。許可テナントと不一致なら拒否し、監査ログに `denied_tenant` として記録します。ツールが引数を受け付けるのに省略された場合は許可テナント ID を強制注入します。
+
+## デプロイ
+
+- **Azure Container Apps**: [docs/deploy-azure.md](docs/deploy-azure.md) — az CLI で ACR ビルド + Azure Files (SQLite永続化) + Container Apps を構築する手順書
+- **Docker**: `docker build -t mcp-gateway .`(ベースimageを社内ミラーにする場合は `--build-arg BASE_IMAGE=<mirror>/node:22-slim`)。SQLite の保存先 `/data` をボリュームマウントしてください
 
 ## 開発
 

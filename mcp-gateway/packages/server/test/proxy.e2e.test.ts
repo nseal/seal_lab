@@ -48,6 +48,7 @@ describe('MCP gateway e2e', () => {
       dbPath: ':memory:',
       masterKey: randomBytes(32),
       adminToken: ADMIN_TOKEN,
+      sqliteJournal: 'WAL',
     };
     gateway = createGateway(config);
     httpServer = await new Promise((resolve) => {

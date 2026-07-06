@@ -7,6 +7,11 @@ export interface GatewayConfig {
   masterKey: Buffer;
   /** Bearer token required for /api/admin/*. */
   adminToken: string;
+  /**
+   * SQLite journal mode. WAL is fastest but does not work on network
+   * filesystems (e.g. Azure Files) — use DELETE there.
+   */
+  sqliteJournal: 'WAL' | 'DELETE';
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): GatewayConfig {
@@ -30,11 +35,17 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): GatewayConfig 
     );
   }
 
+  const sqliteJournal = (env.MCP_GATEWAY_SQLITE_JOURNAL ?? 'WAL').toUpperCase();
+  if (sqliteJournal !== 'WAL' && sqliteJournal !== 'DELETE') {
+    throw new Error('MCP_GATEWAY_SQLITE_JOURNAL must be WAL or DELETE');
+  }
+
   return {
     port: Number(env.MCP_GATEWAY_PORT ?? 8787),
     dbPath: env.MCP_GATEWAY_DB_PATH ?? 'data/gateway.db',
     masterKey,
     adminToken,
+    sqliteJournal,
   };
 }
 

@@ -4,12 +4,12 @@ import { dirname } from 'node:path';
 
 export type Db = Database.Database;
 
-export function openDb(dbPath: string): Db {
+export function openDb(dbPath: string, journalMode: 'WAL' | 'DELETE' = 'WAL'): Db {
   if (dbPath !== ':memory:') {
     mkdirSync(dirname(dbPath), { recursive: true });
   }
   const db = new Database(dbPath);
-  db.pragma('journal_mode = WAL');
+  db.pragma(`journal_mode = ${journalMode}`);
   db.pragma('foreign_keys = ON');
   migrate(db);
   return db;
