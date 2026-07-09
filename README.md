@@ -2,7 +2,7 @@
 
 実験・ツール置き場。
 
-> **移設のお知らせ**: MCP Gateway(テナント制限つき MCP 中間プロキシ)は専用リポジトリ [nseal/mcp-broker](https://github.com/nseal/mcp-broker) に移動しました。
+> **移設のお知らせ**: MCP Gateway(テナント制限つき MCP 中間プロキシ)は専用リポジトリ [nseal/mcp-gateway](https://github.com/nseal/mcp-gateway) に移動しました。
 
 ## Daily Claude Article Search
 

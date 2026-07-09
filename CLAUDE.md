@@ -2,7 +2,7 @@
 
 ## MCP Gateway (moved)
 
-The MCP Gateway (tenant-restricted MCP proxy) has moved to its own repository: [nseal/mcp-broker](https://github.com/nseal/mcp-broker). It no longer lives in this repo.
+The MCP Gateway (tenant-restricted MCP proxy) has moved to its own repository: [nseal/mcp-gateway](https://github.com/nseal/mcp-gateway). It no longer lives in this repo.
 
 ## Daily Claude Article Search
 
