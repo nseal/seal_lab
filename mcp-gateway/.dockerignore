@@ -1,9 +1,0 @@
-node_modules
-packages/*/node_modules
-packages/*/dist
-data
-*.db
-*.db-*
-.env
-docs
-README.md

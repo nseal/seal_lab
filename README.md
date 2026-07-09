@@ -1,25 +1,10 @@
 # seal_lab
 
-実験・ツール置き場。現在は以下の2つが入っています。
+実験・ツール置き場。
 
-## 1. MCP Gateway — テナント制限つき MCP 中間プロキシ
+> **移設のお知らせ**: MCP Gateway(テナント制限つき MCP 中間プロキシ)は専用リポジトリ [nseal/mcp-broker](https://github.com/nseal/mcp-broker) に移動しました。
 
-[`mcp-gateway/`](mcp-gateway/) — クライアントと上流 MCP サーバー(Asana / Atlassian / Box など)の間に立つプロキシ。既存の MCP サーバーでは制限できない「接続先テナント」を接続口ごとに固定し、情報漏洩を防ぎます。
-
-- 接続口(エンドポイント)ごとに **専用の上流認証情報・許可テナントID・公開ツール allowlist・APIキー** を Web 管理画面から個別管理
-- 全ツール呼び出しの許可/拒否を記録する監査ログ
-- Azure Container Apps へのデプロイ手順書つき ([mcp-gateway/docs/deploy-azure.md](mcp-gateway/docs/deploy-azure.md))
-
-```bash
-cd mcp-gateway
-npm install
-npm test        # e2e テスト
-npm run dev     # http://localhost:8787 (管理画面は /admin/)
-```
-
-詳細は [mcp-gateway/README.md](mcp-gateway/README.md) を参照。
-
-## 2. Daily Claude Article Search
+## Daily Claude Article Search
 
 Claude / Anthropic 関連の注目記事を毎日収集し、[`article/`](article/) に日付つき Markdown ダイジェスト (`article/YYYY-MM-DD.md`) として保存します。
 
@@ -30,7 +15,6 @@ Claude / Anthropic 関連の注目記事を毎日収集し、[`article/`](articl
 ## リポジトリ構成
 
 ```
-mcp-gateway/       MCP Gateway (TypeScript monorepo: server + admin-ui)
 article/           日次記事ダイジェスト
 .github/           記事収集の GitHub Actions ワークフロー
 CLAUDE.md          Claude Code 向けのプロジェクト説明

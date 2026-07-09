@@ -1,12 +1,8 @@
 # seal_lab
 
-## MCP Gateway
+## MCP Gateway (moved)
 
-`mcp-gateway/` はテナント制限つきの MCP 中間プロキシ (TypeScript monorepo)。接続口ごとに専用の上流認証情報・許可テナント・公開ツール allowlist を管理する。詳細は `mcp-gateway/README.md`。
-
-```
-cd mcp-gateway && npm install && npm test   # e2e テスト
-```
+The MCP Gateway (tenant-restricted MCP proxy) has moved to its own repository: [nseal/mcp-broker](https://github.com/nseal/mcp-broker). It no longer lives in this repo.
 
 ## Daily Claude Article Search
 
